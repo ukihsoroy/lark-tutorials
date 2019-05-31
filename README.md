@@ -6,12 +6,7 @@
 
 `关于名字`: **to master** 是根据小时候看到的一首打油诗取的，祝大家都能称为**大师**。
 
-> To follow the path:
-> look to the master
-> follow the master,
-> walk with the master,
-> see through the master,
-> become the master.
+> To follow the path: look to the master, follow the master, walk with the master, see through the master, become the master.
 
 编辑. **2019.05.30**
 
