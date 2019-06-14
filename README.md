@@ -12,4 +12,4 @@
 
 ## 0x01.内容索引 
 
-1. [经典架构案例与方法论](./经典架构案例与方法论)
+1. [经典架构案例与方法论](https://github.com/sigmako/sigmako.github.io/tree/master/经典架构案例与方法论)
