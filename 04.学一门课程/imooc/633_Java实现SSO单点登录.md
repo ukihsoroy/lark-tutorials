@@ -21,10 +21,24 @@
 ## 同域SSO
 
 ```log
-http://localhost/demo1/main_action
-http://localhost/demo2/main_action
+http://localhost/demo1/main.action
+http://localhost/demo2/main.action
 
 准备工作：
 1.SSM环境（Spring Boot）
 2.通用的工具类
+```
+
+## 域不同，但是父域相同
+
+```log
+http://demo1.x.com/demo1/main.action
+http://demo2.x.com/demo2/main.action
+
+统一校验接口：http://check.x.com/checkCookie.action
+
+准备工作：
+1.SSM环境
+2.修改Host文件
+3.tomcat配置
 ```
