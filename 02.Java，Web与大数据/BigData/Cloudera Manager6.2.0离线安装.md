@@ -4,7 +4,7 @@
 
 ## 0x02.安装
 
-### 1.虚拟机
+### 1.配置虚拟机
 
 #### a.安装虚拟机
 
@@ -22,7 +22,7 @@
    ![cdh_vm5](./images/cdh_vm5.png)
 6. 启动虚拟机，登陆后执行命令修改IP: `vi /etc/sysconfig/network-scripts/ifcfg-ens33`
    
-   ```properties
+   ```conf
    BOOTPROTO="static"
    ONBOOT="yes"
    IPADDR=192.168.xxx.xxx
@@ -38,3 +38,195 @@
 7. 保存后，使用：`service network restart` 或者 `systemctl restart network` 重启网络服务。
 8. 测试是否有网络：`ping www.baidu.com`。如下则正常，同样方式配置剩下的虚拟机（注意ip不同）。
    ![cdh_vm7](./images/cdh_vm7.png)
+
+#### c.配置hosts
+
+1. 输入：`vim /etc/hosts`
+2. 配置上面定义好的ip hostname
+
+```hosts
+192.168.91.101 zoo
+192.168.91.102 lion
+192.168.91.103 tiger
+```
+
+### 2.安装Java
+
+### 3.安装ntp时钟
+
+1. 下载并安装ntp时钟：`yum install ntp`
+2. 修改配置文件：`vim /etc/ntp.conf`
+3. ntp基本命令
+   
+```shell
+# 启动/停止ntp服务
+service ntpd start/stop
+
+# 设置开机自动启动
+chkconfig ntpd on
+
+# 查看ntp是否正常运行
+ps -ef | grep ntp
+```
+
+4. 服务端配置
+
+```conf
+# For more information about this file, see the man pages
+# ntp.conf(5), ntp_acc(5), ntp_auth(5), ntp_clock(5), ntp_misc(5), ntp_mon(5).
+
+driftfile /var/lib/ntp/drift
+
+# Permit time synchronization with our time source, but do not
+# permit the source to query or modify the service on this system.
+#restrict default nomodify notrap nopeer noquery
+
+# Permit all access over the loopback interface.  This could
+# be tightened as well, but to do so would effect some of
+# the administrative functions.
+# @1 控制权限相关
+restrict 127.0.0.1
+restrict -6 ::1
+
+resttrict 127.127.1.0
+# Hosts on local network are less restricted.
+#restrict 192.168.91.101 mask 255.255.255.0 nomodify notrap
+
+# @2 新增权限设置，这里开放 192.168.91.0/24 的网段
+restrict 192.168.91.0 mask 255.255.255.0 nomodify notrap
+
+# Use public servers from the pool.ntp.org project.
+# Please consider joining the pool (http://www.pool.ntp.org/join.html).
+
+# @3：注释掉原来的时钟配置
+#server 0.centos.pool.ntp.org iburst
+#server 1.centos.pool.ntp.org iburst
+#server 2.centos.pool.ntp.org iburst
+#server 3.centos.pool.ntp.org iburst
+
+# @4：设置时钟使用本地时钟，注意 `127.127.1.0` 表示的是本地的时钟
+server 127.127.1.0 #local clock
+fudge  127.127.1.0 stratum 10
+
+#broadcast 192.168.1.255 autokey        # broadcast server
+#broadcastclient                        # broadcast client
+#broadcast 224.0.1.1 autokey            # multicast server
+#multicastclient 224.0.1.1              # multicast client
+#manycastserver 239.255.254.254         # manycast server
+#multicastclient 224.0.1.1              # multicast client
+#manycastserver 239.255.254.254         # manycast server
+#manycastclient 239.255.254.254 autokey # manycast client
+
+# Enable public key cryptography.
+#crypto
+
+includefile /etc/ntp/crypto/pw
+
+# Key file containing the keys and key identifiers used when operating
+# with symmetric key cryptography.
+keys /etc/ntp/keys
+
+# Specify the key identifiers which are trusted.
+#trustedkey 4 8 42
+
+# Specify the key identifier to use with the ntpdc utility.
+#requestkey 8
+
+# Specify the key identifier to use with the ntpq utility.
+#controlkey 8
+
+# Enable writing of statistics records.
+#statistics clockstats cryptostats loopstats peerstats
+
+# Disable the monitoring facility to prevent amplification attacks using ntpdc
+# monlist command when default restrict does not include the noquery flag. See
+# CVE-2013-5211 for more details.
+# Note: Monitoring will not be disabled with the limited restriction flag.
+disable monitor
+```
+
+5. 客户端配置
+
+```conf
+# For more information about this file, see the man pages
+# ntp.conf(5), ntp_acc(5), ntp_auth(5), ntp_clock(5), ntp_misc(5), ntp_mon(5).
+
+driftfile /var/lib/ntp/drift
+
+# Permit time synchronization with our time source, but do not
+# permit the source to query or modify the service on this system.
+# restrict default nomodify notrap nopeer noquery
+# @1 权限相关
+restrict default kod nomodify notrap nopeer noquery
+restrict -6 default kod nomodify notrap nopeer noquery
+
+# Permit all access over the loopback interface.  This could
+# be tightened as well, but to do so would effect some of
+# the administrative functions.
+restrict 127.0.0.1
+restrict -6 ::1
+
+# Hosts on local network are less restricted.
+# @2 同服务端，开放的 `192.168.91.0/24` 这个网段
+restrict 192.168.91.0 mask 255.255.255.0 nomodify notrap
+
+# Use public servers from the pool.ntp.org project.
+# Please consider joining the pool (http://www.pool.ntp.org/join.html).
+# server 0.centos.pool.ntp.org iburst
+# server 1.centos.pool.ntp.org iburst
+# server 2.centos.pool.ntp.org iburst
+# server 3.centos.pool.ntp.org iburst
+
+# @3 配置本地服务器时钟地址
+server 192.168.91.101 profer
+
+#broadcast 192.168.1.255 autokey        # broadcast server
+#broadcastclient                        # broadcast client
+#broadcast 224.0.1.1 autokey            # multicast server
+#multicastclient 224.0.1.1              # multicast client
+#manycastserver 239.255.254.254         # manycast server
+#manycastclient 239.255.254.254 autokey # manycast client
+#manycastserver 239.255.254.254         # manycast server
+#manycastclient 239.255.254.254 autokey # manycast client
+
+# Enable public key cryptography.
+#crypto
+
+includefile /etc/ntp/crypto/pw
+
+# Key file containing the keys and key identifiers used when operating
+# with symmetric key cryptography.
+keys /etc/ntp/keys
+
+# Specify the key identifiers which are trusted.
+#trustedkey 4 8 42
+
+# Specify the key identifier to use with the ntpdc utility.
+#requestkey 8
+
+# Specify the key identifier to use with the ntpq utility.
+#controlkey 8
+
+# Enable writing of statistics records.
+#statistics clockstats cryptostats loopstats peerstats
+
+# Disable the monitoring facility to prevent amplification attacks using ntpdc
+# monlist command when default restrict does not include the noquery flag. See
+# CVE-2013-5211 for more details.
+# Note: Monitoring will not be disabled with the limited restriction flag.
+disable monitor
+```
+
+6. 启动服务端NTP服务器
+7. 测试客户端配置是否可用：`ntpdate <服务端ip>`，注意这里要先关闭**客户端的NTP服务**。
+
+![ntp0](./images/ntp0.png)
+
+8. 启动客户端NTP服务
+9. 查看NTP同步状态：`ntpstat`
+
+![ntp1](./images/ntp1.png)
+
+10. 时间不是马上同步，等待一会后，看到如下返回值就ok了。
+
+![ntp2](./images/ntp2.png)
