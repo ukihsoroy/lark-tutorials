@@ -2,13 +2,11 @@
 
 ## 0x01.准备
 
-## 0x02.安装
+## 0x02.配置虚拟机
 
-### 1.配置虚拟机
+### 1.安装虚拟机
 
-#### a.安装虚拟机
-
-#### b.调整设置，配置静态IP
+### 2.调整设置，配置静态IP
 
 1. 点击vmware菜单栏中的 **编辑** 按钮，点击 **虚拟网络编辑器** 
 2. 在弹窗中上面，选择 **NAT模式**，将下面**使用本地DHCP服务将IP地址分配给虚拟机**选项去掉（如果不能更改，点击下面的更改设置）。
@@ -39,7 +37,7 @@
 8. 测试是否有网络：`ping www.baidu.com`。如下则正常，同样方式配置剩下的虚拟机（注意ip不同）。
    ![cdh_vm7](./images/cdh_vm7.png)
 
-#### c.配置hosts
+### 3.配置hosts
 
 1. 输入：`vim /etc/hosts`
 2. 配置上面定义好的ip hostname
@@ -50,13 +48,11 @@
 192.168.91.103 tiger
 ```
 
-### 2.安装Java
+### 4.安装NTP时钟
 
-### 3.安装ntp时钟
-
-1. 下载并安装ntp时钟：`yum install ntp`
+1. 下载并安装NTP时钟：`yum install ntp`
 2. 修改配置文件：`vim /etc/ntp.conf`
-3. ntp基本命令
+3. NTP基本命令
    
 ```shell
 # 启动/停止ntp服务
@@ -230,3 +226,43 @@ disable monitor
 10. 时间不是马上同步，等待一会后，看到如下返回值就ok了。
 
 ![ntp2](./images/ntp2.png)
+
+### 5.配置免密登录
+
+1. 登录虚拟机输入命令：`ssh-keygen -t rsa`
+2. 一路回车，会生成密钥在`~/.ssh`目录下
+3. 全部节点生产完毕后，主节点执行：`ssh-copy-id -i ~/.ssh/id_rsa.pub root@[主节点hostname]`
+4. 输入密码，这句话意思是**将公钥拷贝到本机的authorized_keys上**
+5. 在所有从节点同样都执行这句话：`ssh-copy-id -i ~/.ssh/id_rsa.pub root@[主节点hostname]`
+6. 当所有从节点的密钥都拷贝完毕后，去主节点查看是否完整。如图所示，我是三台机器：
+
+![keygen1](./images/keygen1.png)
+
+7. 在主节点执行命令，将密钥拷贝到全部子节点：`scp ~/.ssh/authorized_keys root@[从节点hostname]:~/.ssh/`
+8. 下面为全部命令合集
+
+```shell
+# 生成公钥，每台节点都要执行
+ssh-keygen -t rsa
+
+# 主节点执行，将主节点的公钥到自己的authorized_keys上
+ssh-copy-id -i ~/.ssh/id_rsa.pub root@zoo
+
+# 从节点执行，将从节点的公钥拷贝到主节点的authorized_keys上，我这里 lion 和 tiger 两个节点各执行了一次
+ssh-copy-id -i ~/.ssh/id_rsa.pub root@zoo
+
+# 查看主节点密钥是否拷贝正常
+vim ~/.ssh/authorized_keys
+
+# 将密钥拷贝到两个从节点
+scp ~/.ssh/authorized_keys root@lion:~/.ssh/
+scp ~/.ssh/authorized_keys root@tiger:~/.ssh/
+```
+
+## 0x03.安装Java
+
+## 0x04.安装MySql
+
+## 0x05.安装CDH
+
+
