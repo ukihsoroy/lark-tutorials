@@ -259,10 +259,57 @@ scp ~/.ssh/authorized_keys root@lion:~/.ssh/
 scp ~/.ssh/authorized_keys root@tiger:~/.ssh/
 ```
 
+### 6.关闭SELINUX
+
+```shell
+vim /etc/selinux/config
+
+## 将SELINUX=enforcing改为SELINUX=disabled
+```
+
+- 设置后需要重启才能生效
+
+### 7.关闭并禁用防火墙服务
+
+```
+systemctl stop firewalld.service
+systemctl disable firewalld.service
+```
+
 ## 0x03.安装Java
+
+- linux 安装jdk
 
 ## 0x04.安装MySql
 
+- 这里推荐在外部创建mysql, 这样方便进行主动等配置
+
 ## 0x05.安装CDH
+
+1. 解压`cm6.2.0-redhat7.tar.gz`
+
+![cdh_install1](./images/cdh_install1.png)
+
+2. RPMS目录下为对应的yum安装文件
+   - 服务端安装
+   
+   ```shell
+   yum -y install cloudera-manager-daemons-6.2.0-968826.el7.x86_64.rpm
+   yum -y install cloudera-manager-agent-6.2.0-968826.el7.x86_64.rpm
+   yum -y install cloudera-manager-server-6.2.0-968826.el7.x86_64.rpm
+   ```
+
+   - 客户端安装
+
+   ```shell
+   yum -y install cloudera-manager-agent-6.2.0-968826.el7.x86_64.rpm
+   yum -y install cloudera-manager-server-6.2.0-968826.el7.x86_64.rpm
+   ```
+
+3. 安装完毕后，进入安装目录，初始化数据库：`cd /opt/cloudera/cm/schema`
+4. 执行命令：`./scm_prepare_database.sh mysql -h192.168.91.1 -uroot -p scm scm` 初始化数据库
+
+  - 这里具体参数解释参见官网：[]()
+
 
 
