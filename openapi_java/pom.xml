@@ -8,6 +8,12 @@
   <artifactId>openapi_java</artifactId>
   <version>1.0-SNAPSHOT</version>
 
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-parent</artifactId>
+    <version>2.3.0.RELEASE</version>
+  </parent>
+
   <name>openapi_java</name>
   <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
@@ -20,6 +26,14 @@
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-test</artifactId>
+    </dependency>
     <!-- https://mvnrepository.com/artifact/com.squareup.retrofit2/retrofit -->
     <dependency>
       <groupId>com.squareup.retrofit2</groupId>
@@ -30,7 +44,22 @@
     <dependency>
       <groupId>com.squareup.retrofit2</groupId>
       <artifactId>converter-jackson</artifactId>
-      <version>2.9.0</version>
+      <version>${retrofit2.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>logging-interceptor</artifactId>
+      <version>3.14.9</version>
+    </dependency>
+    <dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>okhttp</artifactId>
+      <version>3.14.9</version>
+    </dependency>
+    <dependency>
+      <groupId>com.squareup.okio</groupId>
+      <artifactId>okio</artifactId>
+      <version>1.17.5</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
     <dependency>

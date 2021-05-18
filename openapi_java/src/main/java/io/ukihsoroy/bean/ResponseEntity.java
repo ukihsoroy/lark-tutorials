@@ -33,9 +33,10 @@ public class ResponseEntity {
         this.msg = msg;
     }
 
+
     @Override
     public String toString() {
-        return "ResponseEntity{" +
+        return "Response{" +
                 "code=" + code +
                 ", msg='" + msg + '\'' +
                 '}';

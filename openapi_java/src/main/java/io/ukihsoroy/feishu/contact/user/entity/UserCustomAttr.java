@@ -12,10 +12,19 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class) //开启驼峰转下划线
 public class UserCustomAttr {
 
+    /**
+     * 自定义属性类型
+     */
     private String type;
 
+    /**
+     * 自定义属性ID
+     */
     private String id;
 
+    /**
+     * 自定义属性取值
+     */
     private UserCustomAttrValue value;
 
     public String getType() {

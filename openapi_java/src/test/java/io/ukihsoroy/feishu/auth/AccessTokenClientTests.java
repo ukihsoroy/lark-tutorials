@@ -6,20 +6,20 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import io.ukihsoroy.feishu.auth.entity.AccessTokenRequest;
-import io.ukihsoroy.feishu.auth.entity.AppAccessTokenResponse;
-import io.ukihsoroy.feishu.auth.entity.TenantAccessTokenResponse;
+import io.ukihsoroy.feishu.auth.entity.AppAccessTokenResponseEntity;
+import io.ukihsoroy.feishu.auth.entity.TenantAccessTokenResponseEntity;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.Retrofit.Builder;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
-public class AccessTokenTests {
+public class AccessTokenClientTests {
 
     private Retrofit retrofit;
 
     private final String appId = "cli_a017ae4441b89013";
-    private final String appSecret = "h7d32n1J4QppFcUd3nFALbJhzvamT5lG";
+    private final String appSecret = "";
 
     @BeforeEach
     public void buildRetrofit() {
@@ -32,10 +32,10 @@ public class AccessTokenTests {
 
     @Test
     public void testQueryAppAccessToken() throws IOException {
-        AccessToken accessToken = retrofit.create(AccessToken.class);
-        Call<AppAccessTokenResponse> appAccessTokenResponseCall =
-                accessToken.queryAppAccessToken(new AccessTokenRequest(appId, appSecret));
-        Response<AppAccessTokenResponse> execute = appAccessTokenResponseCall.execute();
+        AccessTokenClient accessTokenClient = retrofit.create(AccessTokenClient.class);
+        Call<AppAccessTokenResponseEntity> appAccessTokenResponseCall =
+                accessTokenClient.queryAppAccessToken(new AccessTokenRequest(appId, appSecret));
+        Response<AppAccessTokenResponseEntity> execute = appAccessTokenResponseCall.execute();
 
         assert execute.isSuccessful() && execute.code() == 200 && null != execute.body();
         System.out.println(execute.body().getAppAccessToken());
@@ -43,10 +43,10 @@ public class AccessTokenTests {
 
     @Test
     public void testQueryTenantAccessToken() throws IOException {
-        AccessToken accessToken = retrofit.create(AccessToken.class);
-        Call<TenantAccessTokenResponse> tenantAccessTokenResponseCall =
-                accessToken.queryTenantAccessToken(new AccessTokenRequest(appId, appSecret));
-        Response<TenantAccessTokenResponse> execute = tenantAccessTokenResponseCall.execute();
+        AccessTokenClient accessTokenClient = retrofit.create(AccessTokenClient.class);
+        Call<TenantAccessTokenResponseEntity> tenantAccessTokenResponseCall =
+                accessTokenClient.queryTenantAccessToken(new AccessTokenRequest(appId, appSecret));
+        Response<TenantAccessTokenResponseEntity> execute = tenantAccessTokenResponseCall.execute();
 
         assert execute.isSuccessful() && execute.code() == 200 && null != execute.body();
         System.out.println(execute.body().getTenantAccessToken());

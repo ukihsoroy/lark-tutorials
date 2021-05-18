@@ -2,12 +2,16 @@ package io.ukihsoroy.feishu.contact.user.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
 /**
  * <p>创建用户的邀请方式</p>
  *
  * @author K.O
  * @email ko.shen@hotmail.com
  */
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class) //开启驼峰转下划线
 public class NotificationOption {
 
     /**

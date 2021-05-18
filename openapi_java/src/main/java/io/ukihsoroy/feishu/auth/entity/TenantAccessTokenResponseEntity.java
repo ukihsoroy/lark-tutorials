@@ -6,39 +6,30 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.ukihsoroy.bean.ResponseEntity;
 
 /**
- * 返回实体类
+ * <p>获取tenant access</p>
+ * 改版后tenant和app的token是一样的了，使用哪一个api都可以
  * @author K.O
+ * @email ko.shen@hotmail.com
  */
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class) //开启驼峰转下划线
-public class AppAccessTokenResponse extends ResponseEntity {
-
-    private String appAccessToken;
+public class TenantAccessTokenResponseEntity extends ResponseEntity {
 
     private String tenantAccessToken;
 
     private int expire;
 
-    public AppAccessTokenResponse(Integer code, String msg, String appAccessToken, String tenantAccessToken, int expire) {
+    public TenantAccessTokenResponseEntity(Integer code, String msg, String tenantAccessToken, int expire) {
         super(code, msg);
-        this.appAccessToken = appAccessToken;
         this.tenantAccessToken = tenantAccessToken;
         this.expire = expire;
     }
 
-    public AppAccessTokenResponse(String appAccessToken, String tenantAccessToken, int expire) {
-        this.appAccessToken = appAccessToken;
+    public TenantAccessTokenResponseEntity(String tenantAccessToken, int expire) {
         this.tenantAccessToken = tenantAccessToken;
         this.expire = expire;
     }
 
-    public AppAccessTokenResponse() {}
-
-    public String getAppAccessToken() {
-        return appAccessToken;
-    }
-
-    public void setAppAccessToken(String appAccessToken) {
-        this.appAccessToken = appAccessToken;
+    public TenantAccessTokenResponseEntity() {
     }
 
     public String getTenantAccessToken() {
