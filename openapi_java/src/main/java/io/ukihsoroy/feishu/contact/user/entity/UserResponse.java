@@ -34,6 +34,11 @@ public class UserResponse extends UserRequest {
 
     private String description;
 
+    /**
+     * 是否是租户管理员
+     */
+    private Boolean isTenantManager;
+
     public String getUnionId() {
         return unionId;
     }
@@ -72,5 +77,13 @@ public class UserResponse extends UserRequest {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean getIsTenantManager() {
+        return isTenantManager;
+    }
+
+    public void setIsTenantManager(Boolean tenantManager) {
+        isTenantManager = tenantManager;
     }
 }

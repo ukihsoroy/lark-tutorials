@@ -9,9 +9,8 @@ import org.junit.jupiter.api.Test;
 
 import io.ukihsoroy.bean.Response;
 import io.ukihsoroy.feishu.contact.user.UserClient;
-import io.ukihsoroy.feishu.contact.user.entity.CreateUserView;
+import io.ukihsoroy.feishu.contact.user.entity.UserView;
 import io.ukihsoroy.feishu.contact.user.entity.UserRequest;
-import io.ukihsoroy.feishu.contact.user.entity.UserResponse;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -57,10 +56,32 @@ public class UserClientTests {
         request.setEmployeeType(1);
         Map<String, String> params = new HashMap<>();
         params.put("user_id_type", "user_id");
-        retrofit2.Response<Response<CreateUserView>> response = userClient
-                .create("Bearer t-", params, request).execute();
+        retrofit2.Response<Response<UserView>> response = userClient
+                .create("Bearer t-a970ef88ef5255cb5f2d2e916133eaf982dcfc03", params, request).execute();
         assert response.isSuccessful() && response.code() == 200 && null != response.body();
         System.out.println(response.body().getData().getUser().getName());
+    }
+
+    @Test
+    public void testQueryUser() throws IOException {
+        UserClient userClient = retrofit.create(UserClient.class);
+        Map<String, String> params = new HashMap<>();
+        params.put("user_id_type", "user_id");
+        retrofit2.Response<Response<UserView>> response = userClient
+                .queryUser("Bearer t-", "58f289cf", params).execute();
+        assert response.isSuccessful() && response.code() == 200 && null != response.body();
+        System.out.println(response.body().getData().getUser().getName());
+    }
+
+    @Test
+    public void testQueryUsers() throws IOException {
+        UserClient userClient = retrofit.create(UserClient.class);
+        Map<String, String> params = new HashMap<>();
+        params.put("user_id_type", "user_id");
+        retrofit2.Response<Response<UserView>> response = userClient
+                .queryUsers("Bearer t-", params).execute();
+        assert response.isSuccessful() && response.code() == 200 && null != response.body();
+        System.out.println(response.body().getData().getItems().size());
     }
 
 }
