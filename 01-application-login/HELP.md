@@ -1,7 +1,7 @@
 # Read Me First
 The following was discovered as part of building this project:
 
-* The original package name 'io.ukihsoroy.01-application-login' is invalid and this project uses 'io.ukihsoroy.applicationlogin' instead.
+* The original package name 'io.ukihsoroy.01-application-login' is invalid and this project uses 'io.ukihsoroy.lark' instead.
 
 # Getting Started
 

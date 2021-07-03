@@ -1,10 +1,10 @@
-package io.ukihsoroy.applicationlogin;
+package io.ukihsoroy.lark;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ApplicationTests {
+class LoginApplicationTests {
 
 	@Test
 	void contextLoads() {

@@ -1,13 +1,13 @@
-package io.ukihsoroy.applicationlogin;
+package io.ukihsoroy.lark;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Application {
+public class LoginApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
+		SpringApplication.run(LoginApplication.class, args);
 	}
 
 }
